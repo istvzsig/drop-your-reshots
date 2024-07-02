@@ -8,15 +8,11 @@ function useImages() {
     setImages(images ? JSON.parse(images) : []);
   }
 
-  function handleLocalStoreChange() {
-    loadImagesFromLocalStorage();
-  }
-
   useEffect(() => {
     loadImagesFromLocalStorage();
-    window.addEventListener("storage", handleLocalStoreChange);
+    window.addEventListener("storage", loadImagesFromLocalStorage);
     return () => {
-      window.removeEventListener("storage", handleLocalStoreChange);
+      window.removeEventListener("storage", loadImagesFromLocalStorage);
     };
   }, []);
 
