@@ -1,10 +1,13 @@
 import "./App.css";
+import DropZoneComponent from "./features/drop-zone/DropZoneComponent";
+import ImageGalleryComponent from "./features/image-gallery/ImageGalleryComponent";
 
 function App() {
   return (
-    <>
-      <h1>App</h1>
-    </>
+    <div>
+      <DropZoneComponent />
+      <ImageGalleryComponent />
+    </div>
   );
 }
 
