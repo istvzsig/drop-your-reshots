@@ -63,11 +63,6 @@ export default function DropZoneComponent() {
     reader.readAsDataURL(file);
   }
 
-  // function getImagesFromLocalStorage() {
-  //   const images = localStorage.getItem("images");
-  //   return images ? JSON.parse(images) : [];
-  // }
-
   return (
     isDragOver && (
       <div
