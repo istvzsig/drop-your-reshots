@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function useImages() {
+export function useImages() {
   const [images, setImages] = useState([]);
 
   function loadImagesFromLocalStorage() {
@@ -18,5 +18,3 @@ function useImages() {
 
   return images;
 }
-
-export { useImages };
