@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
+import { getImages } from "./indexedDB";
 
 export function useImages() {
   const [images, setImages] = useState([]);
 
-  function loadImagesFromLocalStorage() {
-    const images = window.localStorage.getItem("images");
-    setImages(images ? JSON.parse(images) : []);
+  async function loadImagesFromIndexedDB() {
+    const images = await getImages();
+    setImages(images.map((image) => image.data));
   }
 
   useEffect(() => {
-    loadImagesFromLocalStorage();
-    window.addEventListener("storage", loadImagesFromLocalStorage);
+    loadImagesFromIndexedDB();
+    window.addEventListener("storage", loadImagesFromIndexedDB);
     return () => {
-      window.removeEventListener("storage", loadImagesFromLocalStorage);
+      window.removeEventListener("storage", loadImagesFromIndexedDB);
     };
   }, []);
 
