@@ -16,19 +16,19 @@ export function ImagesGallery({ images, isShuffled }) {
 
 // eslint-disable-next-line react/prop-types
 export function ShuffleButton({ setIsShuffled }) {
-  function onMouseDown(event = MouseEvent) {
+  function handleMouseDown(event = MouseEvent) {
     event.stopPropagation();
     setIsShuffled(true);
   }
 
-  function onMouseUp(event = MouseEvent) {
+  function handleMouseUp(event = MouseEvent) {
     event.stopPropagation();
     setIsShuffled(false);
   }
   return (
     <div
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       className="shuffle-button"
     >
       <svg
