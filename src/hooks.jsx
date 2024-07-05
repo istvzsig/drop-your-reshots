@@ -6,7 +6,14 @@ export function useImages() {
 
   async function loadImagesFromIndexedDB() {
     const images = await getImages();
-    setImages(images.map((image) => image.data));
+    setImages(
+      images.map((image) => {
+        return {
+          id: image.id,
+          data: image.data,
+        };
+      })
+    );
   }
 
   useEffect(() => {

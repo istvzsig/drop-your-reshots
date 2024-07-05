@@ -1,3 +1,5 @@
+import { deleteImageById } from "../../indexedDB.js";
+
 export function ImagesGallery({ images, isShuffled }) {
   if (isShuffled) {
     for (let i = 0; i < images.length; ++i) {
@@ -5,10 +7,20 @@ export function ImagesGallery({ images, isShuffled }) {
       [images[i], images[r]] = [images[r], images[i]];
     }
   }
+
+  function handleOnClick(image) {
+    deleteImageById(image.id);
+    window.dispatchEvent(new Event("storage"));
+  }
+
   return images.map((image) => {
     return (
-      <div key={image} className="gallery-item">
-        <img src={image} alt={image}></img>
+      <div
+        key={image.id}
+        className="gallery-item"
+        onClick={() => handleOnClick(image)}
+      >
+        <img src={image.data} alt={image.id}></img>
       </div>
     );
   });

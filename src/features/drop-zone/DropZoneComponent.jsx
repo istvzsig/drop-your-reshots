@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useImages } from "../../hooks";
 import "./drop-zone-component.css";
-import { addImage } from "../../indexedDB";
+import { saveImage } from "../../indexedDB";
 
 export default function DropZoneComponent() {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -46,17 +46,17 @@ export default function DropZoneComponent() {
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i);
       if (file) {
-        saveFile(file);
+        handleSaveFile(file);
       }
     }
   }
 
-  function saveFile(file = File) {
+  function handleSaveFile(file = File) {
     const reader = new FileReader();
     reader.onload = async () => {
       const newImage = reader.result;
       if (!images.includes(newImage)) {
-        await addImage(newImage);
+        await saveImage(newImage);
         window.dispatchEvent(new Event("storage"));
       }
     };

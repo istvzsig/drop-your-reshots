@@ -33,7 +33,7 @@ export function initDb() {
   });
 }
 
-export function addImage(imageData) {
+export function saveImage(imageData) {
   return new Promise((resolve, reject) => {
     initDb().then((db) => {
       const transaction = db.transaction([STORE_NAME], "readwrite");
@@ -41,7 +41,6 @@ export function addImage(imageData) {
       const request = store.add({ data: imageData });
 
       request.onsuccess = () => {
-        console.log(request)
         resolve();
       };
 
@@ -70,15 +69,34 @@ export function getImages() {
   });
 }
 
-export function clearImages() {
+export function deleteImageById(id = null) {
+  return new Promise((resolve, reject) => {
+    initDb().then((db) => {
+      const transaction = db.transaction([STORE_NAME], "readwrite");
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.delete(id);
+
+      request.onsuccess = (event) => {
+        resolve();
+      };
+
+      request.onerror = (event) => {
+        reject(`Get images error: ${event.target.errorCode}`);
+      };
+    });
+  });
+}
+
+export function deleteImages() {
   return new Promise((resolve, reject) => {
     initDb().then((db) => {
       const transaction = db.transaction([STORE_NAME], "readwrite");
       const store = transaction.objectStore(STORE_NAME);
       const request = store.clear();
 
-      request.onsuccess = () => {
-        resolve();
+      request.onsuccess = (event) => {
+        resolve(event.target.result);
+        console.log(event)
       };
 
       request.onerror = (event) => {
