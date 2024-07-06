@@ -33,25 +33,31 @@ export function initDb() {
   });
 }
 
-export function saveImage(imageData) {
+export function saveImageToIndexedDB(imageData) {
   return new Promise((resolve, reject) => {
-    initDb().then((db) => {
-      const transaction = db.transaction([STORE_NAME], "readwrite");
-      const store = transaction.objectStore(STORE_NAME);
-      const request = store.add({ data: imageData });
+    initDb().then(async (db) => {
+      const indexedDBImagesData = [...await getImagesFromIndexedDB()].map(image => image.data);
 
-      request.onsuccess = () => {
-        resolve();
-      };
+      if (!indexedDBImagesData.includes(imageData)) {
+        const transaction = db.transaction([STORE_NAME], "readwrite");
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.add({ data: imageData });
 
-      request.onerror = (event) => {
-        reject(`Add image error: ${event.target.errorCode}`);
-      };
+        request.onsuccess = () => {
+          resolve();
+        };
+
+        request.onerror = (event) => {
+          reject(`Add image error: ${event.target.errorCode}`);
+        };
+
+        window.dispatchEvent(new Event("storage"));
+      }
     });
   });
 }
 
-export function getImages() {
+export function getImagesFromIndexedDB() {
   return new Promise((resolve, reject) => {
     initDb().then((db) => {
       const transaction = db.transaction([STORE_NAME], "readonly");
@@ -69,14 +75,14 @@ export function getImages() {
   });
 }
 
-export function deleteImageById(id = null) {
+export function deleteImageByIdFromIndexedDB(id = null) {
   return new Promise((resolve, reject) => {
     initDb().then((db) => {
       const transaction = db.transaction([STORE_NAME], "readwrite");
       const store = transaction.objectStore(STORE_NAME);
       const request = store.delete(id);
 
-      request.onsuccess = (event) => {
+      request.onsuccess = () => {
         resolve();
       };
 
@@ -87,7 +93,7 @@ export function deleteImageById(id = null) {
   });
 }
 
-export function deleteImages() {
+export function deleteImagesFromIndexedDB() {
   return new Promise((resolve, reject) => {
     initDb().then((db) => {
       const transaction = db.transaction([STORE_NAME], "readwrite");
@@ -96,7 +102,6 @@ export function deleteImages() {
 
       request.onsuccess = (event) => {
         resolve(event.target.result);
-        console.log(event)
       };
 
       request.onerror = (event) => {
