@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { getImages } from "./indexedDB";
+import { getImagesFromIndexedDB } from "./indexedDB";
 
 export function useImages() {
   const [images, setImages] = useState([]);
 
   async function loadImagesFromIndexedDB() {
-    const images = await getImages();
+    const images = await getImagesFromIndexedDB();
     setImages(
       images.map((image) => {
         return {
