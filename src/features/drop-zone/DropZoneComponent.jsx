@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useImages } from "../../hooks";
+import { saveImageToIndexedDB } from "../../indexedDB";
 import "./drop-zone-component.css";
-import { saveImage } from "../../indexedDB";
 
 export default function DropZoneComponent() {
   const [isDragOver, setIsDragOver] = useState(false);
-  const images = useImages();
 
   document.addEventListener("dragover", (event) => {
     event.preventDefault();
@@ -24,17 +22,17 @@ export default function DropZoneComponent() {
     setIsDragOver(false);
   });
 
-  function onDragOver(event = DragEvent) {
+  function handleDragOver(event = DragEvent) {
     event.preventDefault();
     event.stopPropagation();
   }
 
-  function onDragLeave(event = DragEvent) {
+  function handleDragLeave(event = DragEvent) {
     event.preventDefault();
     setIsDragOver(false);
   }
 
-  function onDrop(event = DragEvent) {
+  function handleDrop(event = DragEvent) {
     event.preventDefault();
     if (event.dataTransfer.files) {
       handleFiles(event.dataTransfer.files);
@@ -54,11 +52,7 @@ export default function DropZoneComponent() {
   function handleSaveFile(file = File) {
     const reader = new FileReader();
     reader.onload = async () => {
-      const newImage = reader.result;
-      if (!images.includes(newImage)) {
-        await saveImage(newImage);
-        window.dispatchEvent(new Event("storage"));
-      }
+      await saveImageToIndexedDB(reader.result);
     };
     reader.readAsDataURL(file);
   }
@@ -67,9 +61,9 @@ export default function DropZoneComponent() {
     isDragOver && (
       <div
         className="drop-zone-overlay"
-        onDragOver={onDragOver}
-        onDragLeave={onDragLeave}
-        onDrop={onDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
       >
         <div>DROP YOUR REACT SHOTS</div>
         <input type="file" multiple hidden />
