@@ -75,7 +75,7 @@ export function getImagesFromIndexedDB() {
   });
 }
 
-export function deleteImageByIdFromIndexedDB(id = null) {
+export function deleteImageByIdFromIndexedDB(id = undefined) {
   return new Promise((resolve, reject) => {
     initDb().then((db) => {
       const transaction = db.transaction([STORE_NAME], "readwrite");
