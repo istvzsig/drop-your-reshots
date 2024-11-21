@@ -36,7 +36,7 @@ export function initDb() {
 export function saveImageToIndexedDB(imageData) {
   return new Promise((resolve, reject) => {
     initDb().then(async (db) => {
-      const indexedDBImagesData = [...await getImagesFromIndexedDB()].map(image => image.data);
+      const indexedDBImagesData = [...await getImagesFromIndexedDb()].map(image => image.data);
 
       if (!indexedDBImagesData.includes(imageData)) {
         const transaction = db.transaction([STORE_NAME], "readwrite");
@@ -51,13 +51,13 @@ export function saveImageToIndexedDB(imageData) {
           reject(`Add image error: ${event.target.errorCode}`);
         };
 
-        window.dispatchEvent(new Event("storage"));
+        window.dispatchEvent(new Event(EVENT_NAMES.STORAGE));
       }
     });
   });
 }
 
-export function getImagesFromIndexedDB() {
+export function getImagesFromIndexedDb() {
   return new Promise((resolve, reject) => {
     initDb().then((db) => {
       const transaction = db.transaction([STORE_NAME], "readonly");

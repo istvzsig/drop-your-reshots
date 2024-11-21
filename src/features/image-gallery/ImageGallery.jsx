@@ -1,16 +1,17 @@
-/* eslint-disable react/prop-types */
 import { useState } from "react";
-import { useImages } from "../../hooks";
-import { ShuffleButtonComponent, ImageComponent } from "./components";
+import { useImages } from "../../hook/hooks";
 import "./image-gallery-component.css";
 
-export default function ImageGalleryComponent() {
+import ImageComponent from "../../components/Image/ImageComponent";
+import ShuffleButton from "../../components/ShuffleButton/SuffleButtonComponent";
+
+export default function ImageGallery() {
   const [isShuffled, setIsShuffled] = useState(false);
   const images = useImages();
 
   return (
     <div className="gallery">
-      <ShuffleButtonComponent setIsShuffled={setIsShuffled} />
+      {/* <ShuffleButton setIsShuffled={setIsShuffled} /> */}
       {images.map((image) => {
         if (isShuffled) {
           for (let i = 0; i < images.length; ++i) {
@@ -18,7 +19,7 @@ export default function ImageGalleryComponent() {
             [images[i], images[r]] = [images[r], images[i]];
           }
         }
-        return <ImageComponent key={image.id} image={image} />;
+        return <ImageComponent key={image.id} data={image.data} />;
       })}
     </div>
   );

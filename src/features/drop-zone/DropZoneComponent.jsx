@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { saveImageToIndexedDB } from "../../indexedDB";
+import { saveImageToIndexedDB } from "../../db/indexedDB";
 import "./drop-zone-component.css";
 
 export default function DropZoneComponent() {
