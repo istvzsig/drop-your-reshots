@@ -1,3 +1,5 @@
+import { EVENT_NAMES } from "../conts";
+
 const DB_NAME = "images-gallery";
 const DB_VERSION = 1;
 const STORE_NAME = "images";

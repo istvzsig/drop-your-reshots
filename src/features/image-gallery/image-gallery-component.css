@@ -54,12 +54,16 @@
   color: white;
 }
 
-.gallery-item-overlay.show {
+.gallery-item[data-is-shown=false] {
+  filter: blur(0) !important;
+}
+
+.gallery-item[data-is-shown=true] .gallery-item-overlay {
   animation-name: show;
   z-index: 1;
 }
 
-.gallery-item-overlay.hide {
+.gallery-item[data-is-shown=false] .gallery-item-overlay {
   animation-name: hide;
   /* z-index: -1; */
 }
