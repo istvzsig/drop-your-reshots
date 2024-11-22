@@ -13,16 +13,13 @@ export function initDb() {
     }
 
     const request = indexedDB.open(DB_NAME, DB_VERSION);
-
     request.onerror = (event) => {
       reject(`Database error: ${event.target.errorCode}`);
     };
-
     request.onsuccess = (event) => {
       db = event.target.result;
       resolve(db);
     };
-
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {

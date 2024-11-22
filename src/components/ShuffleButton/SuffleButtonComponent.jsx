@@ -1,18 +1,17 @@
 // eslint-disable-next-line react/prop-types
-export default function ShuffleButton({ setIsShuffled }) {
+export default function ShuffleButton({ handleShuffleImages }) {
     function handleMouseDown(event = MouseEvent) {
         event.stopPropagation();
-        setIsShuffled(true);
     }
 
     function handleMouseUp(event = MouseEvent) {
         event.stopPropagation();
-        setIsShuffled(false);
+        handleShuffleImages();
     }
     return (
         <div
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
+            onPointerDown={handleMouseDown}
+            onPointerUp={handleMouseUp}
             className="shuffle-button"
         >
             <svg

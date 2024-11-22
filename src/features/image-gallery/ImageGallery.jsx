@@ -1,30 +1,35 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useImages } from "../../hook/hooks";
+
 import "./image-gallery-component.css";
+
 import ImageComponent from "../../components/Image/ImageComponent";
 import ShuffleButton from "../../components/ShuffleButton/SuffleButtonComponent";
 
 export default function ImageGallery() {
-  const [isShuffled, setIsShuffled] = useState(false);
-  const images = useImages();
+  const { images, handleShuffleImages } = useImages();
+  const [shuffledImages, setShuffledImages] = useState(images);
   const imageRefs = useRef();
 
-  const handleGetChildren = () => {
-    return imageRefs.current.map(ref => ref.getData());
-    console.log(childrenData);
-  };
+  function shufffleImages() {
+    const shuffled = [...images];
+    let len = shuffledImages.length;
+
+    while (len--) {
+      const r = (Math.random() * images.length) | 0;
+      [shuffled[len], shuffled[r]] = [shuffled[r], shuffled[len]];
+    }
+    setShuffledImages(shuffled);
+  }
+
+  // useEffect(() => {
+  //   isShuffled ? shufffleImages() : setShuffledImages(images);
+  // }, [isShuffled, images]);
 
   return (
     <div ref={imageRefs} className="gallery">
-      {/* <ShuffleButton setIsShuffled={setIsShuffled} /> */}
-      {images.map((image, index) => {
-        if (isShuffled) {
-          for (let i = 0; i < images.length; ++i) {
-            const r = (Math.random() * images.length) | 0;
-            [images[i], images[r]] = [images[r], images[i]];
-          }
-        }
-
+      {/* <ShuffleButton handleShuffleImages={handleShuffleImages} /> */}
+      {images.map(image => {
         return (
           <ImageComponent
             key={image.id}

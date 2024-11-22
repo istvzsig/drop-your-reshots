@@ -1,17 +1,19 @@
-import React, { useState, forwardRef } from 'react';
+import { useState, forwardRef } from 'react';
 
-export default function ImageComponent({ id, data }) {
-    const [isShown, setIsShown] = useState(false);
-
-    function toggleIsShown() {
-        setIsShown(!isShown);
-        setTimeout(() => setIsShown(false), 1000);
-    }
+function ImageComponent({ id, data }, ref) {
+    const [visible, setVisible] = useState(false);
 
     return (
-        <div data-is-shown={isShown} data-id={id} className="gallery-item" onClick={toggleIsShown}>
+        <div
+            data-is-shown={visible}
+            data-id={id}
+            className="gallery-item"
+            onClick={() => setVisible(!visible)}
+        >
             <div className="gallery-item-overlay"></div>
             <img className="gallery-image" src={data} alt="data" data-id={id} />
         </div>
     );
 }
+
+export default forwardRef(ImageComponent);
